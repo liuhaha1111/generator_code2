@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.progect1.mapper.CpcUsrInfoMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        cpc_usr_id, cpc_usr_name, cpc_usr_contact, cpc_usr_work_id, cpc_usr_omitted, cpc_usr_open_id, cpc_usr_belonging, cpc_usr_belonging_name, cpc_usr_status, register_status
+    </sql>
+
+</mapper>
