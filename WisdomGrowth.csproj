@@ -1,0 +1,724 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.ML.4.0.2\build\netstandard2.0\Microsoft.ML.props" Condition="Exists('..\packages\Microsoft.ML.4.0.2\build\netstandard2.0\Microsoft.ML.props')" />
+  <Import Project="..\packages\Microsoft.ML.CpuMath.4.0.2\build\netstandard2.0\Microsoft.ML.CpuMath.props" Condition="Exists('..\packages\Microsoft.ML.CpuMath.4.0.2\build\netstandard2.0\Microsoft.ML.CpuMath.props')" />
+  <Import Project="..\packages\Microsoft.ML.OnnxRuntime.1.20.1\build\netstandard2.0\Microsoft.ML.OnnxRuntime.props" Condition="Exists('..\packages\Microsoft.ML.OnnxRuntime.1.20.1\build\netstandard2.0\Microsoft.ML.OnnxRuntime.props')" />
+  <Import Project="..\packages\MethodBoundaryAspect.Fody.2.0.149\build\MethodBoundaryAspect.Fody.props" Condition="Exists('..\packages\MethodBoundaryAspect.Fody.2.0.149\build\MethodBoundaryAspect.Fody.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{439C0A91-4148-47AE-B51C-2D2123C5EC81}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WisdomGrowth</RootNamespace>
+    <AssemblyName>WisdomGrowth</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Accord, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.3.8.0\lib\net462\Accord.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Genetic, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.Genetic.3.8.0\lib\net462\Accord.Genetic.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.MachineLearning, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.MachineLearning.3.8.0\lib\net462\Accord.MachineLearning.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Math, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.Math.3.8.0\lib\net462\Accord.Math.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Math.Core, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.Math.3.8.0\lib\net462\Accord.Math.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Neuro, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.Neuro.3.8.0\lib\net462\Accord.Neuro.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Statistics, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.Statistics.3.8.0\lib\net462\Accord.Statistics.dll</HintPath>
+    </Reference>
+    <Reference Include="CsvHelper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\CsvHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.v14.1, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Printing.v14.1.Core, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Sparkline.v14.1.Core, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Utils.v14.1, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraEditors.v14.1, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="Google.Protobuf, Version=3.21.12.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Protobuf.3.21.12\lib\net45\Google.Protobuf.dll</HintPath>
+    </Reference>
+    <Reference Include="MathNet.Numerics, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MathNet.Numerics.5.0.0\lib\net48\MathNet.Numerics.dll</HintPath>
+    </Reference>
+    <Reference Include="MethodBoundaryAspect, Version=2.0.149.0, Culture=neutral, PublicKeyToken=296379d5065c9d61, processorArchitecture=MSIL">
+      <HintPath>..\packages\MethodBoundaryAspect.Fody.2.0.149\lib\net462\MethodBoundaryAspect.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.Numerics, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.Numerics.8.0.0\lib\net462\Microsoft.Bcl.Numerics.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ML.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ML.4.0.2\lib\netstandard2.0\Microsoft.ML.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ML.CpuMath, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ML.CpuMath.4.0.2\lib\netstandard2.0\Microsoft.ML.CpuMath.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ML.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ML.4.0.2\lib\netstandard2.0\Microsoft.ML.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ML.DataView, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ML.DataView.4.0.2\lib\netstandard2.0\Microsoft.ML.DataView.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ML.KMeansClustering, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ML.4.0.2\lib\netstandard2.0\Microsoft.ML.KMeansClustering.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ML.OnnxRuntime, Version=1.20.1.0, Culture=neutral, PublicKeyToken=f27f157f0a5b7bb6, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ML.OnnxRuntime.Managed.1.20.1\lib\netstandard2.0\Microsoft.ML.OnnxRuntime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ML.PCA, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ML.4.0.2\lib\netstandard2.0\Microsoft.ML.PCA.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ML.StandardTrainers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ML.4.0.2\lib\netstandard2.0\Microsoft.ML.StandardTrainers.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ML.Transforms, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ML.4.0.2\lib\netstandard2.0\Microsoft.ML.Transforms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Office.Interop.Word.15.0.4797.1004\lib\net20\Microsoft.Office.Interop.Word.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Scripting">
+      <HintPath>C:\Users\清欢\Desktop\Microsoft.Scripting.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.VisualBasic.PowerPacks.Vs, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="OneOf, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OneOf.3.0.263\lib\net45\OneOf.dll</HintPath>
+    </Reference>
+    <Reference Include="Pandas.NET, Version=0.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Pandas.NET.0.6.0\lib\netstandard2.0\Pandas.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="Protobuf.Text, Version=0.7.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Protobuf.Text.0.7.2\lib\netstandard2.0\Protobuf.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="Python.Runtime, Version=3.0.4.0, Culture=neutral, PublicKeyToken=5000fea6cba702dd, processorArchitecture=MSIL">
+      <HintPath>..\packages\pythonnet.3.0.4\lib\netstandard2.0\Python.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Razorvine.Pickle, Version=1.4.0.0, Culture=neutral, PublicKeyToken=35192c03a6ef2e20, processorArchitecture=MSIL">
+      <HintPath>..\packages\Razorvine.Pickle.1.4.0\lib\netstandard2.0\Razorvine.Pickle.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.2.10.0\lib\net46\Serilog.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.Console, Version=4.1.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.Console.4.1.0\lib\net45\Serilog.Sinks.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLite.Designer">
+      <HintPath>C:\Users\清欢\Desktop\SQLite_X86\new\SQLite.Designer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.6.0\lib\net462\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.CodeDom, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.CodeDom.8.0.0\lib\net462\System.CodeDom.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Immutable, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.8.0.0\lib\net462\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Data.SQLite, Version=1.0.81.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\dll\sqlite\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.119.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Linq.1.0.119.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.6.0\lib\net462\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Tensors, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Tensors.8.0.0\lib\net462\System.Numerics.Tensors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics.Vectors, Version=4.1.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.6.0\lib\net462\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Printing" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.1.0\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Threading.Channels, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Channels.8.0.0\lib\net462\System.Threading.Channels.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Tensorflow.Binding, Version=0.150.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TensorFlow.NET.0.150.0\lib\netstandard2.0\Tensorflow.Binding.dll</HintPath>
+    </Reference>
+    <Reference Include="UIAutomationClient" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AutoResizeForm.cs" />
+    <Compile Include="DataBase\DataSelectInfo.cs" />
+    <Compile Include="DataBase\NumericHelper.cs" />
+    <Compile Include="DataBase\ResultInfo.cs" />
+    <Compile Include="DataBase\userhelper.cs" />
+    <Compile Include="DataBase\Visualization.cs" />
+    <Compile Include="DrawLineForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DrawLineForm.Designer.cs">
+      <DependentUpon>DrawLineForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FlowPipe.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FlowPipe.Designer.cs">
+      <DependentUpon>FlowPipe.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GeneticAlgorithmManual.cs" />
+    <Compile Include="MaterialForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MaterialForm.Designer.cs">
+      <DependentUpon>MaterialForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModelTraining\BPNeuralNetwork.cs" />
+    <Compile Include="ModelTraining\BPNNForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ModelTraining\BPNNForm.Designer.cs">
+      <DependentUpon>BPNNForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModelTraining\GBRForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ModelTraining\GBRForm.Designer.cs">
+      <DependentUpon>GBRForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModelTraining\DataTableMerger.cs" />
+    <Compile Include="ModelTraining\ModelTrainingInfo.cs" />
+    <Compile Include="ModelTraining\NeuralNetwork.cs" />
+    <Compile Include="ModelTraining\RFRForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ModelTraining\RFRForm.Designer.cs">
+      <DependentUpon>RFRForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModelTraining\SVRForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ModelTraining\SVRForm.Designer.cs">
+      <DependentUpon>SVRForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModelTraining\SVRModel.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="RegisterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RegisterForm.Designer.cs">
+      <DependentUpon>RegisterForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StandardScaler.cs" />
+    <Compile Include="UCConduit.cs" />
+    <Compile Include="UCConduit.Designer.cs">
+      <DependentUpon>UCConduit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WindowZoom.cs" />
+    <Compile Include="DataSelectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataSelectionForm.Designer.cs">
+      <DependentUpon>DataSelectionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EnergyManagementForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EnergyManagementForm.Designer.cs">
+      <DependentUpon>EnergyManagementForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WorkbenchesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WorkbenchesForm.Designer.cs">
+      <DependentUpon>WorkbenchesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainSystemForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainSystemForm.Designer.cs">
+      <DependentUpon>MainSystemForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MaterialMenuForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MaterialMenuForm.Designer.cs">
+      <DependentUpon>MaterialMenuForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WisdomMenuForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WisdomMenuForm.Designer.cs">
+      <DependentUpon>WisdomMenuForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModelTrainingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ModelTrainingForm.Designer.cs">
+      <DependentUpon>ModelTrainingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NeuralNetworkForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NeuralNetworkForm.Designer.cs">
+      <DependentUpon>NeuralNetworkForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NewMainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewMainForm.Designer.cs">
+      <DependentUpon>NewMainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NumericPredictionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NumericPredictionForm.Designer.cs">
+      <DependentUpon>NumericPredictionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OptimizationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OptimizationForm.Designer.cs">
+      <DependentUpon>OptimizationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OutlierRemovalForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OutlierRemovalForm.Designer.cs">
+      <DependentUpon>OutlierRemovalForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TroubleShootingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TroubleShootingForm.Designer.cs">
+      <DependentUpon>TroubleShootingForm.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="DataSelectionForm.resx">
+      <DependentUpon>DataSelectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DrawLineForm.resx">
+      <DependentUpon>DrawLineForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EnergyManagementForm.resx">
+      <DependentUpon>EnergyManagementForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WorkbenchesForm.resx">
+      <DependentUpon>WorkbenchesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainSystemForm.resx">
+      <DependentUpon>MainSystemForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MaterialForm.resx">
+      <DependentUpon>MaterialForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MaterialMenuForm.resx">
+      <DependentUpon>MaterialMenuForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModelTrainingForm.resx">
+      <DependentUpon>ModelTrainingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModelTraining\BPNNForm.resx">
+      <DependentUpon>BPNNForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModelTraining\GBRForm.resx">
+      <DependentUpon>GBRForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModelTraining\RFRForm.resx">
+      <DependentUpon>RFRForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModelTraining\SVRForm.resx">
+      <DependentUpon>SVRForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NeuralNetworkForm.resx">
+      <DependentUpon>NeuralNetworkForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewMainForm.resx">
+      <DependentUpon>NewMainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NumericPredictionForm.resx">
+      <DependentUpon>NumericPredictionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OptimizationForm.resx">
+      <DependentUpon>OptimizationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OutlierRemovalForm.resx">
+      <DependentUpon>OutlierRemovalForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RegisterForm.resx">
+      <DependentUpon>RegisterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TroubleShootingForm.resx">
+      <DependentUpon>TroubleShootingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WisdomMenuForm.resx">
+      <DependentUpon>WisdomMenuForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bg %282%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bg %283%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bg %284%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bg_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bglogin.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\2%281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bg1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\btn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\top.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\3.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\log.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\log.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button-16-00.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\2+d.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Minimize-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\放大.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\关机.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\浅蓝.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\57-00.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\蓝框深蓝.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\31.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button-1-01.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button-2-00.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button-2-01.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\button-3-01.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\log1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\轮子.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\轮子1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\开关.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\开关1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\部件.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\主体.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\结果.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\结果2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\主体%281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\图片1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\downresult.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\downresult1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\upresult.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\upresult1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\rightupresult.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\1.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\1-v.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\1-t.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\downresult2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\downresult3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SVR模型.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\top_img.png" />
+    <None Include="Resources\查看-列表.png" />
+    <None Include="Resources\登录名.png" />
+    <None Include="Resources\密码.png" />
+    <None Include="Resources\user.png" />
+    <None Include="Resources\密码1.png" />
+    <None Include="Resources\登录框.png" />
+    <None Include="Resources\登录框1.png" />
+    <None Include="Resources\title_item_border.png" />
+    <None Include="Resources\top_img1.png" />
+    <None Include="Resources\right_border.png" />
+    <None Include="Resources\title_item_border_click.png" />
+    <None Include="Resources\渐变背景框-01%281%29.png" />
+    <None Include="Resources\渐变背景框-01%288%29.png" />
+    <None Include="Resources\user1.png" />
+    <None Include="Resources\fan_card_border.png" />
+    <None Include="Resources\top_img2.png" />
+    <None Include="Resources\right_border1.png" />
+    <None Include="Resources\right_border2.png" />
+    <None Include="Resources\loginbg.png" />
+    <None Include="Resources\neuralnetwork.png" />
+    <None Include="Resources\rightupresult1.png" />
+    <None Include="Resources\rightupresult2.png" />
+    <None Include="Resources\水.png" />
+    <None Include="Resources\水1.png" />
+    <None Include="Resources\molecula.png" />
+    <None Include="Resources\zmf_certification%402x.png" />
+    <None Include="Resources\P压力.png" />
+    <None Include="Resources\温度.png" />
+    <None Include="Resources\Un温度.png" />
+    <None Include="Resources\转速.png" />
+    <None Include="Resources\血,血液,水,水滴.png" />
+    <None Include="Resources\模块图标-05.png" />
+    <None Include="Resources\Monero.png" />
+    <None Include="Resources\用水.png" />
+    <None Include="Resources\压力报警.png" />
+    <None Include="Resources\info.png" />
+    <None Include="Resources\m豆.png" />
+    <None Include="Resources\ORTOPEDIC.png" />
+    <None Include="Resources\输入输出_o.png" />
+    <None Include="Resources\输入输出_n.png" />
+    <None Include="Resources\输出全面分析报表.png" />
+    <None Include="Resources\399iconfont-网络中断.png" />
+    <None Include="Resources\校企合作合同申请.png" />
+    <None Include="Resources\设备参数管理.png" />
+    <None Include="Resources\参数设置.png" />
+    <None Include="Resources\主页.png" />
+    <None Include="Resources\主页log.png" />
+    <None Include="Resources\009-时间管理.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RFR模型.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GBR模型.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\模块图标-051.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Fody.6.7.0\build\Fody.targets" Condition="Exists('..\packages\Fody.6.7.0\build\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Fody.6.7.0\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.7.0\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\MethodBoundaryAspect.Fody.2.0.149\build\MethodBoundaryAspect.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MethodBoundaryAspect.Fody.2.0.149\build\MethodBoundaryAspect.Fody.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.ML.OnnxRuntime.Managed.1.20.1\build\netstandard2.0\Microsoft.ML.OnnxRuntime.Managed.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ML.OnnxRuntime.Managed.1.20.1\build\netstandard2.0\Microsoft.ML.OnnxRuntime.Managed.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.ML.OnnxRuntime.1.20.1\build\netstandard2.0\Microsoft.ML.OnnxRuntime.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ML.OnnxRuntime.1.20.1\build\netstandard2.0\Microsoft.ML.OnnxRuntime.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.ML.OnnxRuntime.1.20.1\build\netstandard2.0\Microsoft.ML.OnnxRuntime.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ML.OnnxRuntime.1.20.1\build\netstandard2.0\Microsoft.ML.OnnxRuntime.targets'))" />
+    <Error Condition="!Exists('..\packages\Accord.3.8.0\build\Accord.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Accord.3.8.0\build\Accord.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.ML.CpuMath.4.0.2\build\netstandard2.0\Microsoft.ML.CpuMath.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ML.CpuMath.4.0.2\build\netstandard2.0\Microsoft.ML.CpuMath.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.ML.4.0.2\build\netstandard2.0\Microsoft.ML.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ML.4.0.2\build\netstandard2.0\Microsoft.ML.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.ML.4.0.2\build\netstandard2.0\Microsoft.ML.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ML.4.0.2\build\netstandard2.0\Microsoft.ML.targets'))" />
+  </Target>
+  <Import Project="..\packages\Microsoft.ML.OnnxRuntime.Managed.1.20.1\build\netstandard2.0\Microsoft.ML.OnnxRuntime.Managed.targets" Condition="Exists('..\packages\Microsoft.ML.OnnxRuntime.Managed.1.20.1\build\netstandard2.0\Microsoft.ML.OnnxRuntime.Managed.targets')" />
+  <Import Project="..\packages\Microsoft.ML.OnnxRuntime.1.20.1\build\netstandard2.0\Microsoft.ML.OnnxRuntime.targets" Condition="Exists('..\packages\Microsoft.ML.OnnxRuntime.1.20.1\build\netstandard2.0\Microsoft.ML.OnnxRuntime.targets')" />
+  <Import Project="..\packages\Accord.3.8.0\build\Accord.targets" Condition="Exists('..\packages\Accord.3.8.0\build\Accord.targets')" />
+  <Import Project="..\packages\Microsoft.ML.4.0.2\build\netstandard2.0\Microsoft.ML.targets" Condition="Exists('..\packages\Microsoft.ML.4.0.2\build\netstandard2.0\Microsoft.ML.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
